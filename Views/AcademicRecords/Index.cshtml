@@ -1,0 +1,92 @@
+﻿@model IEnumerable<StudentManagement.Models.AcademicRecord>
+
+@{
+    ViewBag.Title = "Index";
+    var studentID = ViewBag.StudentId;
+}
+
+<h2>BẢNG ĐIỂM HỌC SINH</h2>
+@if (Session["Role"].Equals("Admin"))
+{
+    <p>
+        @Html.ActionLink("Thêm kết quả mới", "AddResult", "AcademicRecords", new { studentId = studentID}, null)
+    </p>
+
+
+
+}
+<table class="table table-bordered">
+    <tr>
+        <th class="d-none">
+            Lớp
+        </th>
+        <th class="d-none">
+            Họ và tên
+        </th>
+        <th>
+            Mã môn học
+        </th>
+        <th>
+            Học kỳ
+        </th>
+        <th>
+            Năm học
+        </th>
+        <th>
+            Điểm giữa kỳ
+        </th>
+        <th>
+            Điểm cuối kỳ
+        </th>
+        <th>
+            Điểm thành phần
+        </th>
+        <th>
+            Điểm trung bình
+        </th>
+        <th>
+            Xếp loại
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="d-none">
+                @Html.DisplayFor(modelItem => item.Class.ClassName)
+            </td>
+            <td class="d-none">
+                @Html.DisplayFor(modelItem => item.Student.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject.SubjectCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Semester)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MidtermScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComponentScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LetterGrade)
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="mt-3">
+    @Html.ActionLink("Về trang chủ", "Index", "Students")
+</div>

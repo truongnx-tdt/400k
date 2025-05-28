@@ -1,0 +1,148 @@
+﻿@model StudentManagement.Models.StatisticsViewModel
+
+@{
+    ViewBag.Title = "Thống Kê Hệ Thống";
+}
+
+<div class="container">
+    <h2>Thống Kê Hệ Thống</h2>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Tổng quan</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Loại</th>
+                                <th>Số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Học sinh</td>
+                                <td>@Model.TotalStudents</td>
+                            </tr>
+                            <tr>
+                                <td>Lớp học</td>
+                                <td>@Model.TotalClasses</td>
+                            </tr>
+                            <tr>
+                                <td>Môn học</td>
+                                <td>@Model.TotalSubjects</td>
+                            </tr>
+                            <tr>
+                                <td>Khối</td>
+                                <td>@Model.TotalDepartments</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Điểm trung bình theo môn</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Môn học</th>
+                                <th>Điểm TB</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SubjectAverages)
+                            {
+                                <tr>
+                                    <td>@item.SubjectName</td>
+                                    <td>@item.AverageScore.ToString("0.00")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thống kê số Học sinh theo lớp -->
+        <div class="col-md-4">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Số Học sinh theo lớp</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Lớp</th>
+                                <th>Số SV</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.StudentsByClass)
+                            {
+                                <tr>
+                                    <td>@item.ClassName</td>
+                                    <td>@item.StudentCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Biểu đồ điểm trung bình</h3>
+                </div>
+                <div class="panel-body">
+                    <canvas id="chart" style="height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section scripts {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                var subjectNames = @Html.Raw(Json.Encode(Model.SubjectAverages.Select(s => s.SubjectName).ToArray()));
+                var averageScores = @Html.Raw(Json.Encode(Model.SubjectAverages.Select(s => s.AverageScore).ToArray()));
+
+                var ctx = document.getElementById('chart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: subjectNames,
+                        datasets: [{
+                            label: 'Điểm trung bình',
+                            data: averageScores,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+    }

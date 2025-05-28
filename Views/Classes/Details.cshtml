@@ -1,0 +1,53 @@
+﻿@model StudentManagement.Models.Class
+
+@{
+    ViewBag.Title = "Chi tiết";
+}
+
+<h2>THÔNG TIN CHI TIẾT</h2>
+
+<div>
+    <h4>Lớp học</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Khối
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department.DepartmentCode)
+        </dd>
+
+        <dt>
+            Tên Lớp:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassName)
+        </dd>
+
+        <dt>
+            Năm Học:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AcademicYear)
+        </dd>
+
+        <dt>
+            Giáo Viên Chủ Nhiệm:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HomeroomTeacher)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Chỉnh sửa thông tin", "Edit", new { id = Model.ClassId })
+    <div class="mt-3">
+        @Html.ActionLink("Về trang chủ", "Index")
+    </div>
+</p>
+<a href="~/Views/Classes/Details.cshtml">~/Views/Classes/Details.cshtml</a>

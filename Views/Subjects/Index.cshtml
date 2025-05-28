@@ -1,0 +1,57 @@
+﻿@model IEnumerable<StudentManagement.Models.Subject>
+
+@{
+    ViewBag.Title = "Danh sách môn học";
+}
+
+<h2>Danh sách môn học</h2>
+
+<p>
+    @Html.ActionLink("Tạo mới", "Create")
+</p>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Mã Khối
+        </th>
+        <th>
+            Mã Môn Học
+        </th>
+        <th>
+            Tên Môn Học
+        </th>
+        <th>
+            Thời lượng
+        </th>
+        <th>
+            Mô Tả
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.DepartmentCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubjectCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubjectName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Credit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.SubjectId }) |
+            @Html.ActionLink("Chi tiết", "Details", new { id=item.SubjectId }) |
+            @Html.ActionLink("Xóa", "Delete", new { id=item.SubjectId })
+        </td>
+    </tr>
+}
+
+</table>

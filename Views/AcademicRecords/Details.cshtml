@@ -1,0 +1,99 @@
+﻿@model StudentManagement.Models.AcademicRecord
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>CHI TIẾT ĐIỂM</h2>
+
+<div>
+    <h4>Thông tin kết quả:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tên lớp:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Class.ClassName)
+        </dd>
+
+        <dt>
+           Họ và tên:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.FullName)
+        </dd>
+
+        <dt>
+            Mã môn học:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject.SubjectCode)
+        </dd>
+
+        <dt>
+           Học kỳ:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semester)
+        </dd>
+
+        <dt>
+           Năm học
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt>
+           Điểm giữa kỳ:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MidtermScore)
+        </dd>
+
+        <dt>
+           Điểm cuối kỳ:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FinalScore)
+        </dd>
+
+        <dt>
+           Điểm thành phần:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ComponentScore)
+        </dd>
+
+        <dt>
+           Điểm trung bình:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalScore)
+        </dd>
+
+        <dt>
+            Xếp loại:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LetterGrade)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <div class="mt-3">
+        @Html.ActionLink("Quay lại bảng điểm", "StudentGrades", "AcademicRecords", new { studentId = Model.StudentId }, null)
+    </div>
+</p>

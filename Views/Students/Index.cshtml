@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Quản lý Học sinh";
+}
+
+<h2>DANH SÁCH HỌC SINH</h2>
+
+<p>
+    @Html.ActionLink("Thêm học sinh mới", "Create")
+</p>
+<table class="table table-bordered" style="border: 1px solid black;">
+    <tr>
+        <th style="border: 1px solid black;">
+            Lớp
+        </th>
+        <th style="border: 1px solid black;">
+            Họ và tên
+        </th>
+        <th style="border: 1px solid black;">
+            Email
+        </th>
+        <th style="border: 1px solid black;">
+            Số điện thoại phụ huynh:
+        </th>
+        <th style="border: 1px solid black;">
+            Địa chỉ
+        </th>
+        <th style="border: 1px solid black;">
+            Ngày sinh
+        </th>
+        <th style="border: 1px solid black;">
+            Giới tính
+        </th>
+        <th class="d-none" style="border: 1px solid black;">
+            link hình ảnh
+        </th>
+        <th style="border: 1px solid black;">Tùy chọn</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td style="border: 1px solid black;">
+            @(item.Class != null ? item.Class.ClassName : "N/A")
+        </td>
+
+        <td style="border: 1px solid black;">
+            @item.FullName
+        </td>
+        <td style="border: 1px solid black;">
+            @item.Email
+        </td>
+        <td style="border: 1px solid black;">
+            @item.PhoneNumber
+        </td>
+        <td style="border: 1px solid black;">
+            @item.Address
+        </td>
+        <td style="border: 1px solid black;">
+            @item.DateOfBirth.ToString("dd/MM/yyyy")
+        </td>
+        <td style="border: 1px solid black;">
+            @(item.Gender ? "Nam" : "Nữ")
+        </td>
+        <td class="d-none" style="border: 1px solid black;">
+            @item.ImagePath
+        </td>
+        <td class="d-none" style="border: 1px solid black;">
+            @if (!string.IsNullOrEmpty(item.ImagePath))
+            {
+                <img src="@Url.Content(item.ImagePath)" alt="Student Image" style="width:50px;height:50px;" />
+            }
+        </td>
+        <td style="border: 1px solid black;">
+            @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.StudentId }) |
+            @Html.ActionLink("Xem chi tiết", "Details", new { id = item.StudentId }) |
+            @Html.ActionLink("Xóa", "Delete", new { id = item.StudentId })
+        </td>
+    </tr>
+}
+
+</table>
