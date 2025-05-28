@@ -1,119 +1,273 @@
 ﻿@model StudentManagement.Models.Student
 
 @{
-   ViewBag.Title = "Thêm mới học sinh";
-}
-<h2>THÊM MỚI</h2>
-
-@using (Html.BeginForm()) 
-{
-   @Html.AntiForgeryToken()
-   
-   <div class="form-horizontal">
-       <h4>Nhập thông tin của học sinh:</h4>
-       <hr />
-       @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-       <div>
-           Họ và tên:
-           <div class="col-md-10">
-               @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
-               @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
-           </div>
-       </div>
-
-       <div class="form-group mt-2">
-           Email:
-           <div class="col-md-10">
-               @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-               @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-           </div>
-       </div>
-
-       <div class="form-group mt-2">
-           Số điện thoại phụ huynh:
-           <div class="col-md-10">
-               @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-               @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-           </div>
-       </div>
-
-       <div class="form-group mt-2">
-           Địa chỉ:
-           <div class="col-md-10">
-               @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-               @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-           </div>
-       </div>
-
-       <div class="form-group mt-2">
-           Ngày sinh:
-           <div class="col-md-10">
-               @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control datetimepicker", @type = "date" })
-               @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
-           </div>
-       </div>
-
-       <div class="form-group mt-2">
-           Giới tính: 
-           <span class="col-md-10">
-               <span class="radio">
-                   <label>
-                       @Html.RadioButtonFor(model => model.Gender, true) Nam
-                   </label>
-                   <label>
-                       @Html.RadioButtonFor(model => model.Gender, false) Nữ
-                   </label>
-                   @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
-               </span>
-           </span>
-       </div>
-
-       <div class="form-group mt-2 d-none">
-           Chọn ảnh:
-           <div class="col-md-10">
-               <input type="file" name="ImageFile" class="form-control" onchange="previewImage(event)" />
-               @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger" })
-               <img id="imagePreview" src="#" alt="Image Preview" style="display:none; max-width: 100%; height: auto; margin-top: 10px;" />
-           </div>
-       </div>
-
-       <div class="form-group mt-2">
-           Chọn lớp:
-           <div class="col-md-10">
-               @Html.DropDownList("ClassId", null, htmlAttributes: new { @class = "form-control" })
-               @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
-           </div>
-       </div>
-
-       <div class="form-group mt-3">
-           <div class="col-md-offset-2 col-md-10">
-               <input type="submit" value="Xác nhận" class="btn btn-success" />
-           </div>
-       </div>
-   </div>
+    ViewBag.Title = "Thêm mới học sinh";
 }
 
-<div class="mt-3">
-    @Html.ActionLink("Về trang chủ", "Index")
+<div class="container mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="mb-6">
+        <ol class="flex items-center space-x-2 text-sm">
+            <li>
+                <a href="/Home/Statistics" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                    <i class="fas fa-home mr-1"></i>Trang chủ
+                </a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <a href="/Students/Index" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">Danh sách học sinh</a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span class="text-gray-700 font-medium">Thêm mới</span>
+            </li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg rounded-3">
+                <div class="card-header bg-gradient bg-primary text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle bg-white bg-opacity-25 p-3 rounded-circle me-3">
+                            <i class="fas fa-user-plus fa-2x"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">Thêm mới học sinh</h4>
+                            <small class="text-white-50">Vui lòng điền đầy đủ thông tin học sinh</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("Create", "Students", FormMethod.Post, new { id = "createStudentForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger shadow-sm" })
+
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label fw-bold mb-2 d-flex align-items-center">
+                                            <i class="fas fa-user me-2 text-primary"></i>Họ và tên
+                                        </label>
+                                        <div>
+                                            @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control form-control-lg shadow-sm", placeholder = "Nhập họ và tên học sinh" } })
+                                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger small mt-1" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-4">
+                                        <label class="control-label fw-bold mb-2 d-flex align-items-center">
+                                            <i class="fas fa-envelope me-2 text-primary"></i>Email
+                                        </label>
+                                        <div>
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-lg shadow-sm", placeholder = "Nhập email học sinh" } })
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger small mt-1" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-4">
+                                        <label class="control-label fw-bold mb-2 d-flex align-items-center">
+                                            <i class="fas fa-phone me-2 text-primary"></i>Số điện thoại phụ huynh
+                                        </label>
+                                        <div>
+                                            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control form-control-lg shadow-sm", placeholder = "Nhập số điện thoại" } })
+                                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger small mt-1" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-4">
+                                        <label class="control-label fw-bold mb-2 d-flex align-items-center">
+                                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>Địa chỉ
+                                        </label>
+                                        <div>
+                                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control form-control-lg shadow-sm", placeholder = "Nhập địa chỉ" } })
+                                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger small mt-1" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label fw-bold mb-2 d-flex align-items-center">
+                                            <i class="fas fa-calendar me-2 text-primary"></i>Ngày sinh
+                                        </label>
+                                        <div>
+                                            @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control form-control-lg shadow-sm datetimepicker", @type = "date" })
+                                            @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger small mt-1" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-4">
+                                        <label class="control-label fw-bold mb-2 d-flex align-items-center">
+                                            <i class="fas fa-venus-mars me-2 text-primary"></i>Giới tính
+                                        </label>
+                                        <div class="mt-2">
+                                            <div class="form-check form-check-inline">
+                                                @Html.RadioButtonFor(model => model.Gender, true, new { @class = "form-check-input" })
+                                                <label class="form-check-label">Nam</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                @Html.RadioButtonFor(model => model.Gender, false, new { @class = "form-check-input" })
+                                                <label class="form-check-label">Nữ</label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger small mt-1" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-4">
+                                        <label class="control-label fw-bold mb-2 d-flex align-items-center">
+                                            <i class="fas fa-chalkboard me-2 text-primary"></i>Chọn lớp
+                                        </label>
+                                        <div>
+                                            @Html.DropDownList("ClassId", null, "Chọn lớp học", htmlAttributes: new { @class = "form-select form-select-lg shadow-sm" })
+                                            @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger small mt-1" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-4 d-none">
+                                        <label class="control-label fw-bold mb-2 d-flex align-items-center">
+                                            <i class="fas fa-image me-2 text-primary"></i>Chọn ảnh
+                                        </label>
+                                        <div>
+                                            <input type="file" name="ImageFile" class="form-control form-control-lg shadow-sm" onchange="previewImage(event)" />
+                                            @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger small mt-1" })
+                                            <img id="imagePreview" src="#" alt="Image Preview" class="mt-2 rounded shadow-sm" style="display:none; max-width: 200px; height: auto;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-5">
+                                <div class="d-flex gap-3">
+                                    <button type="submit" id="saveButton" class="btn btn-primary btn-lg sm:px-4 px-2 shadow-sm">
+                                        <i class="fas fa-save me-2"></i>Lưu thông tin
+                                    </button>
+                                    <a href="/Students/Index" class="btn btn-outline-secondary btn-lg sm:px-4 px-2 shadow-sm">
+                                        <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-lg rounded-3">
+                <div class="card-header bg-gradient bg-info text-white py-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle bg-white bg-opacity-25 p-2 rounded-circle me-3">
+                            <i class="fas fa-info-circle fa-lg"></i>
+                        </div>
+                        <h5 class="mb-0">Hướng dẫn</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert-info mb-0">
+                        <h6 class="alert-heading"><i class="fas fa-lightbulb me-2"></i>Lưu ý khi thêm học sinh mới:</h6>
+                        <ul class="mb-0 mt-2">
+                            <li>Điền đầy đủ thông tin bắt buộc</li>
+                            <li>Email phải đúng định dạng</li>
+                            <li>Số điện thoại phải đúng định dạng</li>
+                            <li>Ngày sinh không được lớn hơn ngày hiện tại</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-lg rounded-3 mt-4">
+                <div class="card-header bg-gradient bg-success text-white py-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle bg-white bg-opacity-25 p-2 rounded-circle me-3">
+                            <i class="fas fa-eye fa-lg"></i>
+                        </div>
+                        <h5 class="mb-0">Xem trước thông tin</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <button type="button" class="btn btn-outline-success w-100" data-bs-toggle="modal" data-bs-target="#previewModal">
+                        <i class="fas fa-eye me-2"></i>Xem trước thông tin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient bg-primary text-white">
+                <h5 class="modal-title" id="previewModalLabel">
+                    <i class="fas fa-user me-2"></i>Xem trước thông tin học sinh
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="avatar-placeholder rounded-circle bg-light p-4 mx-auto" style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-4x text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th class="bg-light" style="width: 30%">Họ và tên</th>
+                                        <td id="previewFullName">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Email</th>
+                                        <td id="previewEmail">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Số điện thoại</th>
+                                        <td id="previewPhone">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Địa chỉ</th>
+                                        <td id="previewAddress">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Ngày sinh</th>
+                                        <td id="previewDOB">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Giới tính</th>
+                                        <td id="previewGender">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Lớp</th>
+                                        <td id="previewClass">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Đóng
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-   @Scripts.Render("~/bundles/jqueryval")
-   <script type="text/javascript">
-       $(function () {
-           $('.datetimepicker').datetimepicker({
-               format: 'L'
-           });
-       });
-
-       function previewImage(event) {
-           var reader = new FileReader();
-           reader.onload = function(){
-               var output = document.getElementById('imagePreview');
-               output.src = reader.result;
-               output.style.display = 'block';
-           };
-           reader.readAsDataURL(event.target.files[0]);
-       }
-   </script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/student-validation.js"></script>
 }

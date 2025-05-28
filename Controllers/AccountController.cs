@@ -16,7 +16,7 @@ namespace StudentManagement.Controllers
             {
                 return RedirectToAction("Statistics", "Home");
             }
-            Session
+            Session.Clear();
             return View();
         }
 

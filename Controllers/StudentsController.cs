@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using StudentManagement.Models;
 
 namespace StudentManagement.Controllers
@@ -114,10 +115,32 @@ namespace StudentManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                Student student = db.Students.Find(id);
+                if (student == null)
+                {
+                    return HttpNotFound();
+                }
+
+                db.Students.Remove(student);
+                db.SaveChanges();
+
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                }
+                throw;
+            }
         }
         
         protected override void Dispose(bool disposing)
@@ -141,6 +164,32 @@ namespace StudentManagement.Controllers
                 return HttpNotFound();
             }
             return View("Index", academicRecords);
+        }
+
+        // GET: Students/GetDetails/5
+        public JsonResult GetDetails(int id)
+        {
+            var student = db.Students
+                .Include(s => s.Class)
+                .FirstOrDefault(s => s.StudentId == id);
+
+            if (student == null)
+            {
+                return Json(new { error = "Student not found" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var studentDetails = new
+            {
+                fullName = student.FullName,
+                className = student.Class?.ClassName,
+                email = student.Email,
+                phoneNumber = student.PhoneNumber,
+                address = student.Address,
+                dateOfBirth = student.DateOfBirth,
+                gender = student.Gender
+            };
+
+            return Json(JsonConvert.SerializeObject(studentDetails), JsonRequestBehavior.AllowGet);
         }
     }
 }
