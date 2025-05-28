@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using StudentManagement.Models;
 
 namespace StudentManagement.Controllers
@@ -34,6 +35,16 @@ namespace StudentManagement.Controllers
                 return HttpNotFound();
             }
             return View(@class);
+        }
+
+        public ActionResult GetDetails(int id)
+        {
+            var rs = db.Classes.Find(id);
+            if (rs == null)
+            {
+                return Json(new { error = "Không tìm thấy lớp học" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(JsonConvert.SerializeObject(rs), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Classes/Create

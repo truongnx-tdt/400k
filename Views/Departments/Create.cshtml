@@ -4,50 +4,83 @@
     ViewBag.Title = "Tạo mới";
 }
 
-<h2>THÊM MỚI</h2>
+<div class="container mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="mb-6">
+        <ol class="flex items-center space-x-2 text-sm">
+            <li>
+                <a href="/Home/Statistics" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                    <i class="fas fa-home mr-1"></i>Trang chủ
+                </a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <a href="@Url.Action("Index")" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">Danh sách khối</a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span class="text-gray-700 font-medium">Thêm khối mới</span>
+            </li>
+        </ol>
+    </nav>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Khối</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.Label("Mã Khối", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DepartmentCode, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DepartmentCode, "", new { @class = "text-danger" })
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">THÊM MỚI KHỐI</h2>
+            <p class="text-gray-600 mt-1">Thêm thông tin khối mới vào hệ thống</p>
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.Label("Tên Khối", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DepartmentName, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    @using (Html.BeginForm()) 
+    {
+        @Html.AntiForgeryToken()
+        
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6">
+                @Html.ValidationSummary(true, "", new { @class = "text-red-500 mb-4" })
 
-    <div class="form-group">
-        @Html.Label("Mô tả", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                <div class="space-y-6">
+                    <div>
+                        @Html.Label("Mã Khối", htmlAttributes: new { @class = "block text-sm font-medium text-gray-700 mb-1" })
+                        @Html.EditorFor(model => model.DepartmentCode, new { htmlAttributes = new { @class = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" } })
+                        @Html.ValidationMessageFor(model => model.DepartmentCode, "", new { @class = "text-red-500 text-sm mt-1" })
+                    </div>
 
-    <div class="form-group mt-3">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Xác nhận" class="btn btn-success" />
-        </div>
-    </div>
-</div>
-}
+                    <div>
+                        @Html.Label("Tên Khối", htmlAttributes: new { @class = "block text-sm font-medium text-gray-700 mb-1" })
+                        @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" } })
+                        @Html.ValidationMessageFor(model => model.DepartmentName, "", new { @class = "text-red-500 text-sm mt-1" })
+                    </div>
 
-<div>
-    @Html.ActionLink("Quay lại danh sách", "Index")
+                    <div>
+                        @Html.Label("Mô tả", htmlAttributes: new { @class = "block text-sm font-medium text-gray-700 mb-1" })
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-red-500 text-sm mt-1" })
+                    </div>
+                </div>
+
+                <div class="mt-6 flex items-center justify-between border-t pt-4">
+                    <a href="@Url.Action("Index")" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Quay lại
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Xác nhận
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts {

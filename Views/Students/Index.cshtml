@@ -90,13 +90,19 @@
     </div>
 
     <!-- Pagination -->
-    <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-4 rounded-lg shadow-sm">
+    <div class="bg-white px-6 py-4 flex items-center justify-between border-t border-gray-200 mt-4 rounded-lg shadow-sm">
         <div class="flex-1 flex justify-between sm:hidden">
-            <button id="prevPageMobile" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            <button id="prevPageMobile" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-md transition-colors duration-200">
+                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
                 Trang trước
             </button>
-            <button id="nextPageMobile" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            <button id="nextPageMobile" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-md transition-colors duration-200">
                 Trang sau
+                <svg class="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
             </button>
         </div>
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
@@ -107,19 +113,19 @@
             </div>
             <div>
                 <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                    <button id="prevPage" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <button id="prevPage" class="relative inline-flex items-center px-3 py-2 rounded-l-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                         <span class="sr-only">Trang trước</span>
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
-                    <div id="pageNumbers" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                    <div id="pageNumbers" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700">
                         <!-- Page numbers will be inserted here -->
                     </div>
-                    <button id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <button id="nextPage" class="relative inline-flex items-center px-3 py-2 rounded-r-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                         <span class="sr-only">Trang sau</span>
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </button>
                 </nav>
@@ -246,14 +252,52 @@
                 const pageNumbers = document.getElementById('pageNumbers');
                 pageNumbers.innerHTML = '';
                 
-                for (let i = 1; i <= totalPages; i++) {
+                // Calculate the range of page numbers to show
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, startPage + 4);
+                
+                if (endPage - startPage < 4) {
+                    startPage = Math.max(1, endPage - 4);
+                }
+
+                // Add first page and ellipsis if needed
+                if (startPage > 1) {
+                    addPageButton(1);
+                    if (startPage > 2) {
+                        addEllipsis();
+                    }
+                }
+
+                // Add page numbers
+                for (let i = startPage; i <= endPage; i++) {
+                    addPageButton(i);
+                }
+
+                // Add last page and ellipsis if needed
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        addEllipsis();
+                    }
+                    addPageButton(totalPages);
+                }
+
+                function addPageButton(pageNum) {
                     const pageButton = document.createElement('button');
-                    pageButton.className = `relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium ${
-                        i === currentPage ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-50'
+                    pageButton.className = `relative inline-flex items-center px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                        pageNum === currentPage 
+                            ? 'text-white bg-blue-600 hover:bg-blue-700' 
+                            : 'text-gray-700 hover:bg-gray-50'
                     }`;
-                    pageButton.textContent = i;
-                    pageButton.onclick = () => goToPage(i);
+                    pageButton.textContent = pageNum;
+                    pageButton.onclick = () => goToPage(pageNum);
                     pageNumbers.appendChild(pageButton);
+                }
+
+                function addEllipsis() {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700';
+                    ellipsis.textContent = '...';
+                    pageNumbers.appendChild(ellipsis);
                 }
 
                 // Update button states
@@ -261,6 +305,19 @@
                 document.getElementById('nextPage').disabled = currentPage === totalPages;
                 document.getElementById('prevPageMobile').disabled = currentPage === 1;
                 document.getElementById('nextPageMobile').disabled = currentPage === totalPages;
+
+                // Update button styles based on disabled state
+                const buttons = ['prevPage', 'nextPage', 'prevPageMobile', 'nextPageMobile'];
+                buttons.forEach(id => {
+                    const button = document.getElementById(id);
+                    if (button.disabled) {
+                        button.classList.add('opacity-50', 'cursor-not-allowed');
+                        button.classList.remove('hover:bg-gray-50');
+                    } else {
+                        button.classList.remove('opacity-50', 'cursor-not-allowed');
+                        button.classList.add('hover:bg-gray-50');
+                    }
+                });
             }
 
             function displayPage(page) {

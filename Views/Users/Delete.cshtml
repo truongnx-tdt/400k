@@ -4,61 +4,90 @@
     ViewBag.Title = "Xóa";
 }
 
-<h2>XÓA</h2>
+<div class="container mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="mb-6">
+        <ol class="flex items-center space-x-2 text-sm">
+            <li>
+                <a href="/Home/Statistics" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                    <i class="fas fa-home mr-1"></i>Trang chủ
+                </a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <a href="@Url.Action("Index")" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">Danh sách người dùng</a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span class="text-gray-700 font-medium">Xóa người dùng <span class="text-red-600"> @Model.Username</span></span>
+            </li>
+        </ol>
+    </nav>
 
-<h3>Bạn có chắc chắn muốn xóa người dùng này không?</h3>
-<div>
-    <h4>Người dùng</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Vai trò
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Role.RoleName)
-        </dd>
-
-        <dt>
-            Tên đăng nhập
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-
-        <dt>
-            Mật khẩu
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-
-        <dt>
-            Họ và tên
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-
-        <dt>
-            Email
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Xóa" class="btn btn-default" /> |
-            @Html.ActionLink("Quay lại danh sách", "Index")
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">XÓA NGƯỜI DÙNG <span class="text-red-600"> @Model.Username</span></h2>
+            <p class="text-gray-600 mt-1">Bạn có chắc chắn muốn xóa người dùng này không?</p>
         </div>
-    }
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6">
+            <dl class="space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-700">Vai trò</dt>
+                    <dd class="mt-1 text-gray-900">@Html.DisplayFor(model => model.Role.RoleName)</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-gray-700">Tên đăng nhập</dt>
+                    <dd class="mt-1 text-gray-900">@Html.DisplayFor(model => model.Username)</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-gray-700">Mật khẩu</dt>
+                    <dd class="mt-1 text-gray-900">@Html.DisplayFor(model => model.Password)</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-gray-700">Họ và tên</dt>
+                    <dd class="mt-1 text-gray-900">@Html.DisplayFor(model => model.FullName)</dd>
+                </div>
+
+                <div>
+                    <dt class="text-sm font-medium text-gray-700">Email</dt>
+                    <dd class="mt-1 text-gray-900">@Html.DisplayFor(model => model.Email)</dd>
+                </div>
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="mt-6 flex items-center justify-between border-t pt-4">
+                    <a href="@Url.Action("Index")" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Quay lại
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
+                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Xóa
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

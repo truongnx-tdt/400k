@@ -4,55 +4,93 @@
     ViewBag.Title = "Chi tiết";
 }
 
-<h2>Chi tiết</h2>
+<div class="container mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="mb-6">
+        <ol class="flex items-center space-x-2 text-sm">
+            <li>
+                <a href="/Home/Statistics" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                    <i class="fas fa-home mr-1"></i>Trang chủ
+                </a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <a href="@Url.Action("Index")" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                    Danh sách người dùng
+                </a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span class="text-gray-700 font-medium">Chi tiết người dùng @Model.Username</span>
+            </li>
+        </ol>
+    </nav>
 
-<div>
-    <h4>Người dùng</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Vai trò
-        </dt>
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">CHI TIẾT NGƯỜI DÙNG <span class="text-red-600"> @Model.Username</span></h2>
+            <p class="text-gray-600 mt-1">Xem thông tin chi tiết người dùng</p>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Role.RoleName)
-        </dd>
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6">
+            <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Vai trò</dt>
+                        <dd class="mt-1">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                @(Model.Role?.RoleName ?? "N/A")
+                            </span>
+                        </dd>
+                    </div>
 
-        <dt>
-            Tên đăng nhập
-        </dt>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Tên đăng nhập</dt>
+                        <dd class="mt-1 text-sm text-gray-900">@Model.Username</dd>
+                    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Username)
-        </dd>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Mật khẩu</dt>
+                        <dd class="mt-1 text-sm text-gray-900">@Model.Password</dd>
+                    </div>
+                </div>
 
-        <dt>
-            Mật khẩu
-        </dt>
+                <div class="space-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Họ và tên</dt>
+                        <dd class="mt-1 text-sm text-gray-900">@Model.FullName</dd>
+                    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Email</dt>
+                        <dd class="mt-1 text-sm text-gray-900">@Model.Email</dd>
+                    </div>
+                </div>
+            </dl>
+        </div>
+    </div>
 
-        <dt>
-            Họ và tên
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-
-        <dt>
-            Email
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-    </dl>
+    <div class="mt-6 flex space-x-4">
+        <a href="@Url.Action("Edit", new { id = Model.UserId })" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+            <i class="fas fa-edit mr-2"></i>
+            <span>Chỉnh sửa</span>
+        </a>
+        <a href="@Url.Action("Index")" class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+            <i class="fas fa-arrow-left mr-2"></i>
+            <span>Quay lại danh sách</span>
+        </a>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.UserId }) |
-    @Html.ActionLink("Quay lại danh sách", "Index")
-</p>
+
+@section Scripts {
+    <script>
+        // Add any necessary JavaScript here
+    </script>
+}

@@ -18,7 +18,7 @@
 </head>
 <body class="bg-gray-50">
     <!-- Mobile Header (visible only on small screens) -->
-    <header class="lg:hidden bg-gray-900 text-white">
+    <header class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-gray-900 text-white">
         <div class="px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
@@ -139,7 +139,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="min-h-screen lg:ml-64">
+    <main class="min-h-screen lg:ml-64 pt-16 lg:pt-0">
         <div class="">
             @RenderBody()
         </div>

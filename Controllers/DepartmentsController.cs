@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using StudentManagement.Models;
 
 namespace StudentManagement.Controllers
@@ -35,6 +36,13 @@ namespace StudentManagement.Controllers
             return View(department);
         }
 
+        public JsonResult GetDetails(int id){
+            var department = db.Departments.Find(id);
+            if(department == null){
+                return Json(new {error = "Department not found"}, JsonRequestBehavior.AllowGet);
+            }
+            return Json(JsonConvert.SerializeObject(department), JsonRequestBehavior.AllowGet);
+        }
         // GET: Departments/Create
         public ActionResult Create()
         {

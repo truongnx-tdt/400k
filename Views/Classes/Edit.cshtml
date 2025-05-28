@@ -1,65 +1,107 @@
 ﻿@model StudentManagement.Models.Class
 
 @{
-   ViewBag.Title = "Chỉnh sửa lớp học";
+    ViewBag.Title = "Chỉnh sửa lớp học";
+    var className = Model.ClassName;
 }
 
-<h2>CHỈNH SỬA</h2>
+<div class="container mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="mb-6">
+        <ol class="flex items-center space-x-2 text-sm">
+            <li>
+                <a href="/Home/Statistics" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                    <i class="fas fa-home mr-1"></i>Trang chủ
+                </a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <a href="/Classes/Index" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">Danh sách lớp</a>
+            </li>
+            <li class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span class="text-gray-700 font-medium">Chỉnh sửa thông tin lớp @className</span>
+            </li>
+        </ol>
+    </nav>
 
-@using (Html.BeginForm())
-{
-   @Html.AntiForgeryToken()
-   
-   <div class="form-horizontal">
-       <h4>LỚP</h4>
-       <hr />
-       @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-       @Html.HiddenFor(model => model.ClassId)
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-chalkboard me-2"></i>Chỉnh sửa thông tin lớp</h4>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-       <div class="form-group">
-           <div class="col-md-2 control-label">Tên lớp</div>
-           <div class="col-md-10">
-               @Html.EditorFor(model => model.ClassName, new { htmlAttributes = new { @class = "form-control" } })
-               @Html.ValidationMessageFor(model => model.ClassName, "", new { @class = "text-danger" })
-           </div>
-       </div>
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ClassId)
 
-       <div class="form-group">
-           <div class="col-md-2 control-label">Khối</div>
-           <div class="col-md-10">
-               @Html.DropDownList("DepartmentId", null, htmlAttributes: new { @class = "form-control" })
-               @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
-           </div>
-       </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="control-label fw-bold">Tên lớp</label>
+                                <div>
+                                    @Html.EditorFor(model => model.ClassName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ClassName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
 
-       <div class="form-group">
-           <div class="col-md-2 control-label">Năm học</div>
-           <div class="col-md-10">
-               @Html.EditorFor(model => model.AcademicYear, new { htmlAttributes = new { @class = "form-control" } })
-               @Html.ValidationMessageFor(model => model.AcademicYear, "", new { @class = "text-danger" })
-           </div>
-       </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="control-label fw-bold">Khối</label>
+                                <div>
+                                    @Html.DropDownList("DepartmentId", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-       <div class="form-group">
-           <div class="col-md-2 control-label">Giáo viên chủ nhiệm</div>
-           <div class="col-md-10">
-               @Html.EditorFor(model => model.HomeroomTeacher, new { htmlAttributes = new { @class = "form-control" } })
-               @Html.ValidationMessageFor(model => model.HomeroomTeacher, "", new { @class = "text-danger" })
-           </div>
-       </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="control-label fw-bold">Năm học</label>
+                                <div>
+                                    @Html.EditorFor(model => model.AcademicYear, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.AcademicYear, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
 
-       <div class="form-group">
-           <div class="col-md-offset-2 col-md-10">
-               <input type="submit" value="Lưu" class="btn btn-default" />
-           </div>
-       </div>
-   </div>
-}
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="control-label fw-bold">Giáo viên chủ nhiệm</label>
+                                <div>
+                                    @Html.EditorFor(model => model.HomeroomTeacher, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.HomeroomTeacher, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<div>
-   @Html.ActionLink("Quay lại danh sách", "Index")
+                    <div class="form-group mt-4">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Lưu thay đổi
+                            </button>
+                            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-   @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")
 }

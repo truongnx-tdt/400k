@@ -5,7 +5,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using StudentManagement.Models;
 
 namespace StudentManagement.Controllers
@@ -35,6 +37,18 @@ namespace StudentManagement.Controllers
             }
             return View(subject);
         }
+
+        // GET: Subjects/Details/5
+        public JsonResult GetDetails(int? id)
+        {
+            Subject subject = db.Subjects.Find(id);
+            if (id == null)
+            {
+                return Json(new { success = false, error = "Không tìm thấy môn học" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(JsonConvert.SerializeObject(subject), JsonRequestBehavior.AllowGet);
+        }
+
 
         // GET: Subjects/Create
         public ActionResult Create()
