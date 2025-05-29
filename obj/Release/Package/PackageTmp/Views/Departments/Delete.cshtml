@@ -1,0 +1,50 @@
+﻿@model StudentManagement.Models.Department
+
+@{
+    ViewBag.Title = "Xóa";
+}
+
+<h2>XÓA</h2>
+
+<h3>Bạn có chắc chắn muốn xóa không?</h3>
+<div>
+    <h4>Khối</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+           Mã Khối
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartmentCode)
+        </dd>
+
+        <dt>
+            Tên Khối
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartmentName)
+        </dd>
+
+        <dt>
+            Mô tả
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="XÓA" class="btn btn-danger" />
+            <div class="mt-3">
+                @Html.ActionLink("Về trang chủ", "Index")
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,60 @@
+﻿@model StudentManagement.Models.Subject
+
+@{
+    ViewBag.Title = "Chi tiết";
+}
+
+<h2>Chi tiết</h2>
+
+<div>
+    <h4>Môn học</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Mã Khối
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department.DepartmentCode)
+        </dd>
+
+        <dt>
+            Mã Môn học
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubjectCode)
+        </dd>
+
+        <dt>
+            Tên Môn học
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubjectName)
+        </dd>
+
+        <dt>
+            Thời lượng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Credit)
+        </dd>
+
+        <dt>
+            Mô tả
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Chỉnh sửa thông tin", "Edit", new { id = Model.SubjectId })
+    <div class="mt-3">
+        @Html.ActionLink("Quay lại danh sách", "Index")
+    </div>
+</p>

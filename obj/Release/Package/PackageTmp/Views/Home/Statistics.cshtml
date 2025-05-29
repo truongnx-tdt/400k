@@ -1,0 +1,196 @@
+﻿@model StudentManagement.Models.StatisticsViewModel
+
+@{
+    ViewBag.Title = "Thống Kê Hệ Thống";
+}
+
+<div class="p-2 sm:px-6 sm:py-6 sm:mx-10">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-blue-600">Thống Kê Hệ Thống</h2>
+        <div class="flex justify-end space-x-2">
+            <button onclick="window.print()" class="sm:px-4 sm:py-2 px-2 py-1 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                <i class="fas fa-print mr-2"></i>In báo cáo
+            </button>
+            <button onclick="exportToExcel()" class="sm:px-4 sm:py-2 px-2 py-1 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                <i class="fas fa-file-excel mr-2"></i>Xuất Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- Chart moved to top -->
+    <div class="mb-6">
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="px-4 py-3 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Biểu đồ điểm trung bình</h3>
+            </div>
+            <div class="p-4">
+                <canvas id="chart" class="h-[400px]"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <!-- Tổng quan -->
+        <div class="md:col-span-3">
+            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="bg-blue-600 text-white px-4 py-3 rounded-t-lg">
+                    <h3 class="text-lg font-medium">Tổng quan</h3>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-user-graduate mr-2"></i>Học sinh
+                            </span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                @Model.TotalStudents
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-chalkboard mr-2"></i>Lớp học
+                            </span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                @Model.TotalClasses
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-book mr-2"></i>Môn học
+                            </span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                @Model.TotalSubjects
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-building mr-2"></i>Khối
+                            </span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                @Model.TotalDepartments
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Điểm trung bình theo môn -->
+        <div class="md:col-span-5">
+            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="bg-cyan-600 text-white px-4 py-3 rounded-t-lg">
+                    <h3 class="text-lg font-medium">Điểm trung bình theo môn</h3>
+                </div>
+                <div class="p-4">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">Môn học</th>
+                                    <th class="px-4 py-3 text-right text-sm font-medium text-gray-500">Điểm TB</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                @foreach (var item in Model.SubjectAverages)
+                                {
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 text-sm text-gray-700">@item.SubjectName</td>
+                                        <td class="px-4 py-3 text-right">
+                                            <span class="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-sm font-medium">
+                                                @item.AverageScore.ToString("0.00")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Số Học sinh theo lớp - Converted to horizontal layout -->
+        <div class="md:col-span-4">
+            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="bg-green-600 text-white px-4 py-3 rounded-t-lg">
+                    <h3 class="text-lg font-medium">Số Học sinh theo lớp</h3>
+                </div>
+                <div class="p-4">
+                    <div class="flex flex-wrap gap-3">
+                        @foreach (var item in Model.StudentsByClass)
+                        {
+                            <div class="flex-1 min-w-[120px] bg-green-50 rounded-lg p-3 hover:bg-green-100 transition-colors">
+                                <div class="text-sm text-green-800 font-medium mb-1">@item.ClassName</div>
+                                <div class="text-lg font-bold text-green-900">@item.StudentCount</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var subjectNames = @Html.Raw(Json.Encode(Model.SubjectAverages.Select(s => s.SubjectName).ToArray()));
+            var averageScores = @Html.Raw(Json.Encode(Model.SubjectAverages.Select(s => s.AverageScore).ToArray()));
+
+            var ctx = document.getElementById('chart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: subjectNames,
+                    datasets: [{
+                        label: 'Điểm trung bình',
+                        data: averageScores,
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        barThickness: 30
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Thống kê điểm trung bình các môn học'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        function exportToExcel() {
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.json_to_sheet(@Html.Raw(Json.Encode(Model.SubjectAverages)));
+            XLSX.utils.book_append_sheet(wb, ws, "Thống kê điểm");
+            XLSX.writeFile(wb, "thong-ke-diem.xlsx");
+        }
+    </script>
+}

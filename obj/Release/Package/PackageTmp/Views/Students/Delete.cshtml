@@ -1,0 +1,41 @@
+﻿@model StudentManagement.Models.Student
+
+@{
+    ViewBag.Title = "Delete";
+}
+<h2>XÓA</h2>
+
+<div>
+    <h4>Thông tin học sinh:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Lớp:</dt>
+        <dd>@Model.Class.ClassName</dd>
+        <dt>Họ và tên:</dt>
+        <dd>@Model.FullName</dd>
+        <dt>Email:</dt>
+        <dd>@Model.Email</dd>
+        <dt>Số điện thoại phụ huynh:</dt> 
+        <dd>@Model.PhoneNumber</dd>
+        <dt>Địa chỉ:</dt>
+        <dd>@Model.Address</dd>
+        <dt>Ngày sinh:</dt>
+        <dd>@Model.DateOfBirth.ToString("dd/MM/yyyy")</dd>
+        <dt>Giới tính:</dt>
+        <dd>@(Model.Gender ? "Nam" : "Nữ")</dd>
+    </dl>
+
+    <h3>Bạn có chắc chắc muốn xóa học sinh này không?</h3>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="XÓA" class="btn btn-danger" />
+            <div class="mt-3">
+                @Html.ActionLink("Về trang chủ", "Index")
+            </div>
+        </div>
+    }
+</div>

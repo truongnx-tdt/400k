@@ -1,0 +1,98 @@
+﻿@model StudentManagement.Models.User
+
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="min-h-screen flex items-center justify-center from-blue-500 to-indigo-600">
+    <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
+        <div class="text-center">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">Chào mừng đến với hệ thống quản lý điểm học</h1>
+            <p class="text-gray-600 mb-6">Đăng nhập để sử dụng</p>
+        </div>
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            
+
+            <div class="mt-6">
+                <label for="username" class="block text-sm font-medium text-gray-700">Tên đăng nhập</label>
+                <div class="mt-1">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500", id = "username", placeholder = "Nhập tên đăng nhập" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-red-500" })
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <label for="password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                <div class="mt-1 relative">
+                    @Html.PasswordFor(model => model.Password, new { @class = "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500", placeholder = "Nhập mật khẩu", id = "password" })
+                    <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5" onclick="togglePassword()">
+                        <svg id="showPasswordIcon" class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <svg id="hidePasswordIcon" class="h-5 w-5 text-gray-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                        </svg>
+                    </button>
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-red-500" })
+                </div>
+            </div>
+            @Html.ValidationSummary(true, "", new { @class = "bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded mt-4" })
+            <div class="mt-6">
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Đăng nhập</button>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .validation-summary-errors {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .validation-summary-errors::before {
+        content: "";
+        display: inline-block;
+        width: 1.25rem;
+        height: 1.25rem;
+        flex-shrink: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ef4444'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'%3E%3C/path%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .validation-summary-errors ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .validation-summary-errors li {
+        color: #ef4444;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+</style>
+
+<script>
+    function togglePassword() {
+        var passwordInput = document.getElementById('password');
+        var showIcon = document.getElementById('showPasswordIcon');
+        var hideIcon = document.getElementById('hidePasswordIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            showIcon.classList.add('hidden');
+            hideIcon.classList.remove('hidden');
+        } else {
+            passwordInput.type = 'password';
+            showIcon.classList.remove('hidden');
+            hideIcon.classList.add('hidden');
+        }
+    }
+</script>

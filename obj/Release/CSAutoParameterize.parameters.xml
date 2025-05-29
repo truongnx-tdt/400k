@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="StudentManagementConnectionString-Web.config Connection String" description="StudentManagementConnectionString Connection String used in web.config by the application to access the database." defaultValue="Server=db20579.databaseasp.net;Database=db20579;User Id=db20579;Password=Zi9_-Ct3Lq8#;Encrypt=False; MultipleActiveResultSets=True;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\400k\\400k\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='StudentManagementConnectionString']/@connectionString" />
+  </parameter>
+</parameters>

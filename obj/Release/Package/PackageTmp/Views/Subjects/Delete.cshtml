@@ -1,0 +1,65 @@
+﻿@model StudentManagement.Models.Subject
+
+@{
+    ViewBag.Title = "Xóa";
+}
+<h2>XÓA</h2>
+
+<h3>Bạn có chắc chắn muốn xóa không?</h3>
+<div>
+    <h4>Môn học</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Mã Khối
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department.DepartmentCode)
+        </dd>
+
+        <dt>
+            Mã Môn Học
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubjectCode)
+        </dd>
+
+        <dt>
+            Tên Môn Học
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubjectName)
+        </dd>
+
+        <dt>
+            Thời lượng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Credit)
+        </dd>
+
+        <dt>
+            Mô Tả
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="XÓA" class="btn btn-danger" />
+            <div class="mt-3">
+                @Html.ActionLink("Về trang chủ", "Index")
+            </div>
+        </div>
+    }
+</div>

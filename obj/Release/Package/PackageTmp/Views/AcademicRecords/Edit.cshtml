@@ -1,0 +1,111 @@
+﻿@model StudentManagement.Models.AcademicRecord
+
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>CHỈNH SỬA</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Thông tin kết quả:</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        Mã học sinh:
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.StudentId, new { @class = "form-control", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Mã môn học:
+        <div class="col-md-10">
+            @Html.DropDownList("SubjectId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Mã lớp học:
+        <div class="col-md-10">
+            @Html.DropDownList("ClassId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Học kỳ:
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Semester, new SelectList(new List<int> { 1, 2, 3, 4 }), new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Semester, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Năm học:
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Year, new SelectList(Enumerable.Range(2000, DateTime.Now.Year - 1999)), new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        Điểm giữa kỳ:
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.MidtermScore, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MidtermScore, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Điểm cuối kỳ:
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.FinalScore, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FinalScore, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Điểm thành phần:
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ComponentScore, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ComponentScore, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Điểm trung bình:
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TotalScore, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TotalScore, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Xếp loại:
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.LetterGrade, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LetterGrade, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div class="mt-3">
+    @Html.ActionLink("Quay lại bảng điểm", "StudentGrades", "AcademicRecords", new { studentId = Model.StudentId }, null)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

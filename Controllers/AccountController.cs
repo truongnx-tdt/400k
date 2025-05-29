@@ -14,7 +14,15 @@ namespace StudentManagement.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Statistics", "Home");
+                if (Session["UserId"] != null)
+                {
+                    return RedirectToAction("Statistics", "Home");
+                }
+                else
+                {
+                    FormsAuthentication.SignOut();
+                    Session.Clear();                
+                }
             }
             Session.Clear();
             return View();
@@ -31,7 +39,8 @@ namespace StudentManagement.Controllers
 
                 if (foundUser != null)
                 {
-                    FormsAuthentication.SetAuthCookie(foundUser.Username, false);
+                    FormsAuthentication.SetAuthCookie(foundUser.Username, true); // true nếu muốn persistent cookie
+
                     Session["UserId"] = foundUser.UserId;
                     Session["NameUser"] = foundUser.FullName;
                     Session["Role"] = foundUser.Role.RoleName;
